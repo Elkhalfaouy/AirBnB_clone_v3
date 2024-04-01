@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-'''Contains the places view for the API.'''
+'''This script contains the places view for the API.'''
 from flask import jsonify, request
 from werkzeug.exceptions import NotFound, MethodNotAllowed, BadRequest
 
@@ -82,9 +82,9 @@ def add_place(city_id=None, place_id=None):
     if 'name' not in data:
         raise BadRequest(description='Missing name')
     data['city_id'] = city_id
-    new_place = Place(**data)
-    new_place.save()
-    return jsonify(new_place.to_dict()), 201
+    nw_place = Place(**data)
+    nw_place.save()
+    return jsonify(nw_place.to_dict()), 201
 
 
 def update_place(city_id=None, place_id=None):
@@ -136,39 +136,39 @@ def find_places():
             if not state:
                 continue
             for city in state.cities:
-                new_places = []
+                nw_places = []
                 if storage_t == 'db':
-                    new_places = list(
+                    nw_places = list(
                         filter(lambda x: x.id not in places_id, city.places)
                     )
                 else:
-                    new_places = []
+                    nw_places = []
                     for place in all_places:
                         if place.id in places_id:
                             continue
                         if place.city_id == city.id:
-                            new_places.append(place)
-                places.extend(new_places)
-                places_id.extend(list(map(lambda x: x.id, new_places)))
+                            nw_places.append(place)
+                places.extend(nw_places)
+                places_id.extend(list(map(lambda x: x.id, nw_places)))
     if keys_status[1]:
         for city_id in data['cities']:
             if not city_id:
                 continue
             city = storage.get(City, city_id)
             if city:
-                new_places = []
+                nw_places = []
                 if storage_t == 'db':
-                    new_places = list(
+                    nw_places = list(
                         filter(lambda x: x.id not in places_id, city.places)
                     )
                 else:
-                    new_places = []
+                    nw_places = []
                     for place in all_places:
                         if place.id in places_id:
                             continue
                         if place.city_id == city.id:
-                            new_places.append(place)
-                places.extend(new_places)
+                            nw_places.append(place)
+                places.extend(nw_places)
     del places_id
     if all([not keys_status[0], not keys_status[1]]) or not data:
         places = all_places

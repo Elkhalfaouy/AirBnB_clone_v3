@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-'''Contains the places_reviews view for the API.'''
+'''This script contains the places_reviews view for the API.'''
 from flask import jsonify, request
 from werkzeug.exceptions import NotFound, MethodNotAllowed, BadRequest
 
@@ -73,9 +73,9 @@ def add_review(place_id=None, review_id=None):
     if 'text' not in data:
         raise BadRequest(description='Missing text')
     data['place_id'] = place_id
-    new_review = Review(**data)
-    new_review.save()
-    return jsonify(new_review.to_dict()), 201
+    nw_rev = Review(**data)
+    nw_rev.save()
+    return jsonify(nw_rev.to_dict()), 201
 
 
 def update_review(place_id=None, review_id=None):

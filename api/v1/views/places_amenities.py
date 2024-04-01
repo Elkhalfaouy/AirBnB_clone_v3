@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-'''Contains the places_amenities view for the API.'''
+'''This script contains the places_amenities view for the API.'''
 from flask import jsonify, request
 from werkzeug.exceptions import NotFound, MethodNotAllowed
 
@@ -34,8 +34,8 @@ def get_place_amenities(place_id=None, amenity_id=None):
     if place_id:
         place = storage.get(Place, place_id)
         if place:
-            all_amenities = list(map(lambda x: x.to_dict(), place.amenities))
-            return jsonify(all_amenities)
+            amenity_all = list(map(lambda x: x.to_dict(), place.amenities))
+            return jsonify(amenity_all)
     raise NotFound()
 
 
@@ -55,10 +55,10 @@ def remove_place_amenity(place_id=None, amenity_id=None):
         if not place_amenity_link:
             raise NotFound()
         if storage_t == 'db':
-            amenity_place_link = list(
+            amen_place_lnk = list(
                 filter(lambda x: x.id == place_id, amenity.place_amenities)
             )
-            if not amenity_place_link:
+            if not amen_place_lnk:
                 raise NotFound()
             place.amenities.remove(amenity)
             place.save()
@@ -85,10 +85,10 @@ def add_place_amenity(place_id=None, amenity_id=None):
             place_amenity_link = list(
                 filter(lambda x: x.id == amenity_id, place.amenities)
             )
-            amenity_place_link = list(
+            amen_place_lnk = list(
                 filter(lambda x: x.id == place_id, amenity.place_amenities)
             )
-            if amenity_place_link and place_amenity_link:
+            if amen_place_lnk and place_amenity_link:
                 res = amenity.to_dict()
                 del res['place_amenities']
                 return jsonify(res), 200

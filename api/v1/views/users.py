@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-'''Contains the users view for the API.'''
+'''This script contains the users view for the API.'''
 from flask import jsonify, request
 from werkzeug.exceptions import NotFound, BadRequest
 
@@ -23,9 +23,9 @@ def get_users(user_id=None):
                 del obj['reviews']
             return jsonify(obj)
         raise NotFound()
-    all_users = storage.all(User).values()
+    users_al = storage.all(User).values()
     users = []
-    for user in all_users:
+    for user in users_al:
         obj = user.to_dict()
         if 'places' in obj:
             del obj['places']
